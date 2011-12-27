@@ -26,6 +26,11 @@ import com.mojang.ld22.screen.Menu;
 import com.mojang.ld22.screen.TitleMenu;
 import com.mojang.ld22.screen.WonMenu;
 
+/**
+ * Test development branch push
+ * 
+ * 
+ */
 public class Game extends Canvas implements Runnable {
 	private static final long serialVersionUID = 1L;
 	private Random random = new Random();
@@ -34,8 +39,10 @@ public class Game extends Canvas implements Runnable {
 	public static final int WIDTH = 160;
 	private static final int SCALE = 3;
 
-	private BufferedImage image = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_RGB);
-	private int[] pixels = ((DataBufferInt) image.getRaster().getDataBuffer()).getData();
+	private BufferedImage image = new BufferedImage(
+			WIDTH, HEIGHT, BufferedImage.TYPE_INT_RGB);
+	private int[] pixels = ((DataBufferInt) image.getRaster().getDataBuffer())
+			.getData();
 	private boolean running = false;
 	private Screen screen;
 	private Screen lightScreen;
@@ -58,7 +65,8 @@ public class Game extends Canvas implements Runnable {
 
 	public void setMenu(Menu menu) {
 		this.menu = menu;
-		if (menu != null) menu.init(this, input);
+		if (menu != null)
+			menu.init(this, input);
 	}
 
 	public void start() {
@@ -115,8 +123,14 @@ public class Game extends Canvas implements Runnable {
 			}
 		}
 		try {
-			screen = new Screen(WIDTH, HEIGHT, new SpriteSheet(ImageIO.read(Game.class.getResourceAsStream("/icons.png"))));
-			lightScreen = new Screen(WIDTH, HEIGHT, new SpriteSheet(ImageIO.read(Game.class.getResourceAsStream("/icons.png"))));
+			screen =
+					new Screen(WIDTH, HEIGHT, new SpriteSheet(
+							ImageIO.read(Game.class
+									.getResourceAsStream("/icons.png"))));
+			lightScreen =
+					new Screen(WIDTH, HEIGHT, new SpriteSheet(
+							ImageIO.read(Game.class
+									.getResourceAsStream("/icons.png"))));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -172,7 +186,8 @@ public class Game extends Canvas implements Runnable {
 		if (!hasFocus()) {
 			input.releaseAll();
 		} else {
-			if (!player.removed && !hasWon) gameTime++;
+			if (!player.removed && !hasWon)
+				gameTime++;
 
 			input.tick();
 			if (menu != null) {
@@ -220,15 +235,20 @@ public class Game extends Canvas implements Runnable {
 
 		int xScroll = player.x - screen.w / 2;
 		int yScroll = player.y - (screen.h - 8) / 2;
-		if (xScroll < 16) xScroll = 16;
-		if (yScroll < 16) yScroll = 16;
-		if (xScroll > level.w * 16 - screen.w - 16) xScroll = level.w * 16 - screen.w - 16;
-		if (yScroll > level.h * 16 - screen.h - 16) yScroll = level.h * 16 - screen.h - 16;
+		if (xScroll < 16)
+			xScroll = 16;
+		if (yScroll < 16)
+			yScroll = 16;
+		if (xScroll > level.w * 16 - screen.w - 16)
+			xScroll = level.w * 16 - screen.w - 16;
+		if (yScroll > level.h * 16 - screen.h - 16)
+			yScroll = level.h * 16 - screen.h - 16;
 		if (currentLevel > 3) {
 			int col = Color.get(20, 20, 121, 121);
 			for (int y = 0; y < 14; y++)
 				for (int x = 0; x < 24; x++) {
-					screen.render(x * 8 - ((xScroll / 4) & 7), y * 8 - ((yScroll / 4) & 7), 0, col, 0);
+					screen.render(x * 8 - ((xScroll / 4) & 7), y
+							* 8 - ((yScroll / 4) & 7), 0, col, 0);
 				}
 		}
 
@@ -243,12 +263,14 @@ public class Game extends Canvas implements Runnable {
 
 		renderGui();
 
-		if (!hasFocus()) renderFocusNagger();
+		if (!hasFocus())
+			renderFocusNagger();
 
 		for (int y = 0; y < screen.h; y++) {
 			for (int x = 0; x < screen.w; x++) {
 				int cc = screen.pixels[x + y * screen.w];
-				if (cc < 255) pixels[x + y * WIDTH] = colors[cc];
+				if (cc < 255)
+					pixels[x + y * WIDTH] = colors[cc];
 			}
 		}
 
@@ -267,26 +289,40 @@ public class Game extends Canvas implements Runnable {
 	private void renderGui() {
 		for (int y = 0; y < 2; y++) {
 			for (int x = 0; x < 20; x++) {
-				screen.render(x * 8, screen.h - 16 + y * 8, 0 + 12 * 32, Color.get(000, 000, 000, 000), 0);
+				screen.render(
+						x * 8, screen.h - 16 + y * 8, 0 + 12 * 32,
+						Color.get(000, 000, 000, 000), 0);
 			}
 		}
 
 		for (int i = 0; i < 10; i++) {
 			if (i < player.health)
-				screen.render(i * 8, screen.h - 16, 0 + 12 * 32, Color.get(000, 200, 500, 533), 0);
+				screen.render(
+						i * 8, screen.h - 16, 0 + 12 * 32,
+						Color.get(000, 200, 500, 533), 0);
 			else
-				screen.render(i * 8, screen.h - 16, 0 + 12 * 32, Color.get(000, 100, 000, 000), 0);
+				screen.render(
+						i * 8, screen.h - 16, 0 + 12 * 32,
+						Color.get(000, 100, 000, 000), 0);
 
 			if (player.staminaRechargeDelay > 0) {
 				if (player.staminaRechargeDelay / 4 % 2 == 0)
-					screen.render(i * 8, screen.h - 8, 1 + 12 * 32, Color.get(000, 555, 000, 000), 0);
+					screen.render(
+							i * 8, screen.h - 8, 1 + 12 * 32,
+							Color.get(000, 555, 000, 000), 0);
 				else
-					screen.render(i * 8, screen.h - 8, 1 + 12 * 32, Color.get(000, 110, 000, 000), 0);
+					screen.render(
+							i * 8, screen.h - 8, 1 + 12 * 32,
+							Color.get(000, 110, 000, 000), 0);
 			} else {
 				if (i < player.stamina)
-					screen.render(i * 8, screen.h - 8, 1 + 12 * 32, Color.get(000, 220, 550, 553), 0);
+					screen.render(
+							i * 8, screen.h - 8, 1 + 12 * 32,
+							Color.get(000, 220, 550, 553), 0);
 				else
-					screen.render(i * 8, screen.h - 8, 1 + 12 * 32, Color.get(000, 110, 000, 000), 0);
+					screen.render(
+							i * 8, screen.h - 8, 1 + 12 * 32,
+							Color.get(000, 110, 000, 000), 0);
 			}
 		}
 		if (player.activeItem != null) {
@@ -306,16 +342,26 @@ public class Game extends Canvas implements Runnable {
 		int h = 1;
 
 		screen.render(xx - 8, yy - 8, 0 + 13 * 32, Color.get(-1, 1, 5, 445), 0);
-		screen.render(xx + w * 8, yy - 8, 0 + 13 * 32, Color.get(-1, 1, 5, 445), 1);
+		screen.render(
+				xx + w * 8, yy - 8, 0 + 13 * 32, Color.get(-1, 1, 5, 445), 1);
 		screen.render(xx - 8, yy + 8, 0 + 13 * 32, Color.get(-1, 1, 5, 445), 2);
-		screen.render(xx + w * 8, yy + 8, 0 + 13 * 32, Color.get(-1, 1, 5, 445), 3);
+		screen.render(
+				xx + w * 8, yy + 8, 0 + 13 * 32, Color.get(-1, 1, 5, 445), 3);
 		for (int x = 0; x < w; x++) {
-			screen.render(xx + x * 8, yy - 8, 1 + 13 * 32, Color.get(-1, 1, 5, 445), 0);
-			screen.render(xx + x * 8, yy + 8, 1 + 13 * 32, Color.get(-1, 1, 5, 445), 2);
+			screen.render(
+					xx + x * 8, yy - 8, 1 + 13 * 32, Color.get(-1, 1, 5, 445),
+					0);
+			screen.render(
+					xx + x * 8, yy + 8, 1 + 13 * 32, Color.get(-1, 1, 5, 445),
+					2);
 		}
 		for (int y = 0; y < h; y++) {
-			screen.render(xx - 8, yy + y * 8, 2 + 13 * 32, Color.get(-1, 1, 5, 445), 0);
-			screen.render(xx + w * 8, yy + y * 8, 2 + 13 * 32, Color.get(-1, 1, 5, 445), 1);
+			screen.render(
+					xx - 8, yy + y * 8, 2 + 13 * 32, Color.get(-1, 1, 5, 445),
+					0);
+			screen.render(
+					xx + w * 8, yy + y * 8, 2 + 13 * 32,
+					Color.get(-1, 1, 5, 445), 1);
 		}
 
 		if ((tickCount / 20) % 2 == 0) {
